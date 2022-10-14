@@ -29,5 +29,5 @@ public interface CipherTextI {
 	public int[][] dectrypt(int[][] roundKey);
 	
 	//turns matrix to double and returns it
-	public double getCipherText();
+	public String getCipherText();
 }

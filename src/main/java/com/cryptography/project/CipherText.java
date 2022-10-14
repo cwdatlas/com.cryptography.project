@@ -47,9 +47,9 @@ public class CipherText implements CipherTextI{
 		return null;
 	}
 
-	public double getCipherText() {
+	public String getCipherText() {
 		// TODO Auto-generated method stub
-		return 0;
+		return "CipherText";
 	}
 
 }
