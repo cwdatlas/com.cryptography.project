@@ -26,25 +26,29 @@ public class CryptController {
 		while (workingUser) {
 			System.out.println("Do you want to encrypt or decrypt or stop?");
 			String input = reader.readLine();
-
-			System.out.println("Please type in the location of your document");
-			String TextDocName = reader.readLine();
-			String TextDoc = getFileText(TextDocName);
+			
+			if(input.equals("stop")) {
+				workingUser = false;
+				break;
+			}
 
 			if (input.equals("encrypt")) {
+				System.out.println("Please type in the location of your document");
+				String TextDocName = reader.readLine();
+				String TextDoc = getFileText(TextDocName);
 				System.out.println("encrypting file...");
 				String cypherDoc = encrypt(TextDoc);
 				writeDoc(cypherDoc, TextDocName);
 				System.out.println("Document has been encrypted");
 
 			} else if (input.equals("decrypt")) {
+				System.out.println("Please type in the location of your document");
+				String TextDocName = reader.readLine();
+				String TextDoc = getFileText(TextDocName);
 				System.out.println("decrypting file...");
 				String cypherDoc = decrypt(TextDoc);
 				writeDoc(cypherDoc, TextDocName);
 				System.out.println("Document has been encrypted");
-
-			}else if(input.equals("stop")) {
-				workingUser = false;
 				
 			} else {
 				System.out.println("Unexpected input, please try again"); // TODO make statement loop
@@ -56,7 +60,7 @@ public class CryptController {
 	// loop encryption to encrypt entire document
 	// return encrypted document
 	private static String encrypt(String plainText) {
-
+		System.out.println("This is the plaintext: " + plainText);
 		return "encrypted text";
 	}
 
@@ -64,7 +68,7 @@ public class CryptController {
 	// Loop decryption to decrypt entire document
 	// return plain text
 	private static String decrypt(String cipherText) {
-
+		System.out.println("This is the ciphertext: " + cipherText);
 		return "decrypted Text";
 	}
 
@@ -103,19 +107,11 @@ public class CryptController {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new FileWriter(fileName));
+			System.out.println(fileName + " " + doc);
+			writer.write(doc);
+			writer.close();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
-		try {
-			writer.write(doc);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }
