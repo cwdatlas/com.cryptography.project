@@ -10,9 +10,9 @@ public class KeyManager implements KeyManagerI{
 		
 	}
 	
-	public double getRoundKey(int roundNumber) {
+	public int[][] getRoundKey(int roundNumber) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	public boolean expandKey() {

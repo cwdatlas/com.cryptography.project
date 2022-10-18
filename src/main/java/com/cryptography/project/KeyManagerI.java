@@ -4,7 +4,7 @@ package com.cryptography.project;
 public interface KeyManagerI {
 
 	//getRoundKey calculates the round key from the key and the roundNumber
-	public double getRoundKey(int roundNumber);
+	public int[][] getRoundKey(int roundNumber);
 	
 	//expands the key from the original key to a key that round keys can be gathered from
 	public boolean expandKey();

@@ -3,7 +3,7 @@ package com.cryptography.project;
 public class CipherText implements CipherTextI{
 		
 	//gets ciphertext and turns it into matrix and saves it as a private variable
-	public CipherText(double CipherText) {
+	public CipherText(String CipherText) {
 		
 	}
 	

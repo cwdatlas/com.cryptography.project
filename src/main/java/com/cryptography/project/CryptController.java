@@ -60,8 +60,23 @@ public class CryptController {
 	// loop encryption to encrypt entire document
 	// return encrypted document
 	private static String encrypt(String plainText) {
-		System.out.println("This is the plaintext: " + plainText);
-		return "encrypted text";
+		String cipherText = "";
+		KeyManager keyManager = new KeyManager(); //Creating keyManager Object, then generating key
+		keyManager.genorateKey();
+		boolean generatedKey = keyManager.expandKey();
+		System.out.println("Key Generated: "+ generatedKey);
+		
+		for(int i = 0; i < 1; i++) {
+		CipherText cipherBuilder = new CipherText("encrypt me!00000"); //can only use 16byte increments of text
+		cipherBuilder.subBytes(); //make sure returns arent needed (returns should be void or boolean)
+		cipherBuilder.shiftRows();
+		cipherBuilder.mixColumns();
+		cipherBuilder.encryptKey(keyManager.getRoundKey(i));
+		String cipherTextFragment = cipherBuilder.getCipherText(); 
+		cipherText = cipherText.concat(cipherTextFragment);
+		}
+		
+		return cipherText;
 	}
 
 	// TODO step 3: break up text to 128 bit lengths
@@ -70,6 +85,20 @@ public class CryptController {
 	private static String decrypt(String cipherText) {
 		System.out.println("This is the ciphertext: " + cipherText);
 		return "decrypted Text";
+	}
+	
+	private String[] breakInto16Bytes(String file) {
+		int padding = 16 - (file.length()%16);
+		for(int i = 0; i < padding; i++)//add padding to end of text to make text divisible by 16
+			file = file.concat("0");
+		String[] textChunks = new String[file.length()/16];
+		for(int i = 0; i < textChunks.length; i++) {
+			int start = (i+1)*16-16;
+			int end = (i+1)*16;
+			file.getChars(start, end, textChunks, i);
+		}
+		return null;
+		
 	}
 
 	private static String getFileText(String file) {
