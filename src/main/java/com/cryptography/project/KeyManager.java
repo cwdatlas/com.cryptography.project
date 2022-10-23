@@ -20,9 +20,14 @@ public class KeyManager implements KeyManagerI{
 		return false;
 	}
 
-	public double genorateKey() {
+	public void genorateKey() {
 		// TODO Auto-generated method stub
-		return 0;
+	}
+
+	@Override
+	public void setKey(String key) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

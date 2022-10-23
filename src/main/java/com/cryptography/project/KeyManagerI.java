@@ -6,11 +6,13 @@ public interface KeyManagerI {
 	//getRoundKey calculates the round key from the key and the roundNumber
 	public int[][] getRoundKey(int roundNumber);
 	
-	//expands the key from the original key to a key that round keys can be gathered from
+	//expands the key from the original key
 	public boolean expandKey();
 	
 	//generates and sets key internally as a private variable 
-	public double genorateKey();
+	public void genorateKey();
 	
+	//sets key (primarily for decrypting)
+	public void setKey(String key);
 	
 }

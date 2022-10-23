@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CryptController {
+	static int rounds = 9;
 
 	// TODO Build in all steps of controller
 
@@ -65,13 +66,21 @@ public class CryptController {
 		keyManager.genorateKey();
 		boolean generatedKey = keyManager.expandKey();
 		System.out.println("Key Generated: "+ generatedKey);
+		String[] stringPackets = breakInto16Bytes(plainText);
 		
-		for(int i = 0; i < 1; i++) {
-		CipherText cipherBuilder = new CipherText("encrypt me!00000"); //can only use 16byte increments of text
-		cipherBuilder.subBytes(); //make sure returns arent needed (returns should be void or boolean)
-		cipherBuilder.shiftRows();
-		cipherBuilder.mixColumns();
+		for(int i = 0; i < stringPackets.length; i++) {//Round 1
+		CipherText cipherBuilder = new CipherText(stringPackets[i]); //can only use 16byte increments of text
 		cipherBuilder.encryptKey(keyManager.getRoundKey(i));
+		
+		for(int e = 0; e < rounds - 2; e++) {//rounds 2 - n-1
+			cipherBuilder.subBytes(); //make sure returns arent needed (returns should be void or boolean)
+			cipherBuilder.shiftRows();
+			cipherBuilder.mixColumns();
+			cipherBuilder.encryptKey(keyManager.getRoundKey(i+e));
+		}
+		cipherBuilder.subBytes(); //round n
+		cipherBuilder.shiftRows();
+		cipherBuilder.encryptKey(keyManager.getRoundKey(rounds-1)); //we dont want the same round key to be generated
 		String cipherTextFragment = cipherBuilder.getCipherText(); 
 		cipherText = cipherText.concat(cipherTextFragment);
 		}
@@ -83,21 +92,51 @@ public class CryptController {
 	// Loop decryption to decrypt entire document
 	// return plain text
 	private static String decrypt(String cipherText) {
-		System.out.println("This is the ciphertext: " + cipherText);
-		return "decrypted Text";
+		String plainText = "";
+		KeyManager keyManager = new KeyManager(); //Creating keyManager Object, then generating key
+		keyManager.setKey("key");
+		boolean expandedKey = keyManager.expandKey();
+		System.out.println("Key expanded: "+ expandedKey);
+		String[] stringPackets = breakInto16Bytes(plainText);
+		
+		for(int i = 0; i < stringPackets.length; i++) {//Round 1
+		CipherText cipherBuilder = new CipherText(stringPackets[i]); //can only use 16byte increments of text
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds - i));
+		
+		for(int e = 0; e < rounds - 2; e++) {//rounds 2 - n-1
+			cipherBuilder.dectryptKey(keyManager.getRoundKey(i+e));
+			cipherBuilder.mixColumns();
+			cipherBuilder.shiftRows();
+			cipherBuilder.subBytes(); //make sure returns arent needed (returns should be void or boolean)
+		}
+		cipherBuilder.subBytes(); //round n
+		cipherBuilder.shiftRows();
+		cipherBuilder.encryptKey(keyManager.getRoundKey(rounds-1)); //we dont want the same round key to be generated
+		
+		String cipherTextFragment = cipherBuilder.getCipherText(); 
+		plainText = plainText.concat(cipherTextFragment);
+		}
+		
+		return plainText;
 	}
 	
-	private String[] breakInto16Bytes(String file) {
+	private static String[] breakInto16Bytes(String file) {
 		int padding = 16 - (file.length()%16);
 		for(int i = 0; i < padding; i++)//add padding to end of text to make text divisible by 16
 			file = file.concat("0");
-		String[] textChunks = new String[file.length()/16];
+		String[] textChunks = file.split("(?<=\\G................)");
+	
+		/**
+		char[] textChunks = new char[file.length()/16];
 		for(int i = 0; i < textChunks.length; i++) {
 			int start = (i+1)*16-16;
 			int end = (i+1)*16;
-			file.getChars(start, end, textChunks, i);
+			file.getChars(start, end, textChunks, i); //What I think this does is break up the string into sections
+														//of the designated size and place those chars into the textChunk
+														//Array (this could break if thats not what it does
 		}
-		return null;
+		**/
+		return textChunks;
 		
 	}
 

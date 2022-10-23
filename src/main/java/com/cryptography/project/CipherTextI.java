@@ -26,7 +26,7 @@ public interface CipherTextI {
 	
 	//addRoundKey XORs (encrypting) the cipherText using the roundKey
 	//other name used is addRoundKeyInverse
-	public int[][] dectrypt(int[][] roundKey);
+	public int[][] dectryptKey(int[][] roundKey);
 	
 	//turns matrix to double and returns it
 	public String getCipherText();

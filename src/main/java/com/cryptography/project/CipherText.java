@@ -42,7 +42,7 @@ public class CipherText implements CipherTextI{
 		return null;
 	}
 
-	public int[][] dectrypt(int[][] roundKey) {
+	public int[][] dectryptKey(int[][] roundKey) {
 		// TODO Auto-generated method stub
 		return null;
 	}
