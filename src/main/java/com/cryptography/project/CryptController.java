@@ -63,7 +63,6 @@ public class CryptController {
 	private static String encrypt(String plainText) {
 		String cipherText = "";
 		KeyManager keyManager = new KeyManager(); //Creating keyManager Object, then generating key
-		keyManager.genorateKey();
 		boolean generatedKey = keyManager.expandKey();
 		System.out.println("Key Generated: "+ generatedKey);
 		String[] stringPackets = breakInto16Bytes(plainText);
@@ -94,27 +93,26 @@ public class CryptController {
 	private static String decrypt(String cipherText) {
 		String plainText = "";
 		KeyManager keyManager = new KeyManager(); //Creating keyManager Object, then generating key
-		keyManager.setKey("key");
 		boolean expandedKey = keyManager.expandKey();
 		System.out.println("Key expanded: "+ expandedKey);
-		String[] stringPackets = breakInto16Bytes(plainText);
+		String[] stringPackets = breakInto16Bytes(cipherText);
 		
-		for(int i = 0; i < stringPackets.length; i++) {//Round 1
+		for(int i = 0; i < stringPackets.length; i++) {
 		CipherText cipherBuilder = new CipherText(stringPackets[i]); //can only use 16byte increments of text
-		cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds - i));
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds-1-i)); //needs to get key for round 9 (8)
+		cipherBuilder.shiftRowsInverse();
+		cipherBuilder.subBytesInverse(); 
 		
 		for(int e = 0; e < rounds - 2; e++) {//rounds 2 - n-1
-			cipherBuilder.dectryptKey(keyManager.getRoundKey(i+e));
-			cipherBuilder.mixColumns();
-			cipherBuilder.shiftRows();
-			cipherBuilder.subBytes(); //make sure returns arent needed (returns should be void or boolean)
+			cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds-1-(i+e)));
+			cipherBuilder.mixColumnsInverse();
+			cipherBuilder.shiftRowsInverse();
+			cipherBuilder.subBytesInverse(); //make sure returns arent needed (returns should be void or boolean)
 		}
-		cipherBuilder.subBytes(); //round n
-		cipherBuilder.shiftRows();
-		cipherBuilder.encryptKey(keyManager.getRoundKey(rounds-1)); //we dont want the same round key to be generated
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(0)); //we dont want the same round key to be generated
 		
-		String cipherTextFragment = cipherBuilder.getCipherText(); 
-		plainText = plainText.concat(cipherTextFragment);
+		String plainTextFragment = cipherBuilder.getCipherText();//TODO name method more accurately (returns cipher and plain text) 
+		plainText = plainText.concat(plainTextFragment);
 		}
 		
 		return plainText;

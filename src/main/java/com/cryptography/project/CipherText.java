@@ -37,12 +37,12 @@ public class CipherText implements CipherTextI{
 		return null;
 	}
 
-	public int[][] encryptKey(int[][] roundKey) {
+	public int[][] encryptKey(String[][] strings) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public int[][] dectryptKey(int[][] roundKey) {
+	public int[][] dectryptKey(String[][] strings) {
 		// TODO Auto-generated method stub
 		return null;
 	}

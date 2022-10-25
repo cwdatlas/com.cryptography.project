@@ -100,7 +100,7 @@ def add_Rkey(text_matrix,key_matrix):
     print("the list of columns after converting from matrix to columns\n")
     print(list_of_colomns)
     print("\t****************\t\n")
-    # now i got all teh columns in a dictionary
+    # now i got all the columns in a dictionary
     # now multiplying all the columns with the key
     j=0
     key_column = mat_tooColumn(key_matrix, 3)

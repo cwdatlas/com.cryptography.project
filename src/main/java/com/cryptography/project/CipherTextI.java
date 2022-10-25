@@ -22,11 +22,11 @@ public interface CipherTextI {
 	
 	//addRoundKey XORs (encrypting) the cipherText using the roundKey 
 	//other name used is addRoundKey
-	public int[][] encryptKey(int[][] roundKey);
+	public int[][] encryptKey(String[][] roundKey);
 	
 	//addRoundKey XORs (encrypting) the cipherText using the roundKey
 	//other name used is addRoundKeyInverse
-	public int[][] dectryptKey(int[][] roundKey);
+	public int[][] dectryptKey(String[][] roundKey);
 	
 	//turns matrix to double and returns it
 	public String getCipherText();
