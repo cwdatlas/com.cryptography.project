@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.cryptography.project.KeyManagerTests
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in com.cryptography.project.KeyManagerTests
+Tests run: 7, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.034 s <<< FAILURE! - in com.cryptography.project.KeyManagerTests
+expandKeyTest  Time elapsed: 0.008 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "String.getBytes(java.nio.charset.Charset)" because "s" is null
+	at com.cryptography.project.KeyManagerTests.expandKeyTest(KeyManagerTests.java:23)
+

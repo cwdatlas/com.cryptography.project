@@ -1,10 +1,11 @@
 package com.cryptography.project;
 
-import java.awt.RenderingHints.Key;
-import java.math.BigInteger;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import org.python.util.PythonInterpreter;
 
 public class KeyManager implements KeyManagerI {
 	private String[][] byteKey = new String[4][4];
@@ -20,22 +21,32 @@ public class KeyManager implements KeyManagerI {
 	public KeyManager() {
 
 	}
-
-	public String[][] getRoundKey(int roundNumber) {// TODO create section of key creation based on
-		// TODO Auto-generated method stub
+	//TODO update so roundNumber is hashed and then turned to a hex and placed in the array
+	public String[] getRoundKey(int roundNumber) {// TODO create section of key creation based on
 		return null;
 	}
 
-	public boolean expandKey() {
+	public String[][] expandKey() {
 		// first step is to loop through the unfilled expandedKey to fill it
 		String[] storedKey;
+		String[] xored = null;
 		for (int i = 4; i < ExpandedKey.length; i++) {
 			storedKey = ExpandedKey[i - 1];
 			if (i % 4 == 0) {
-
+				storedKey = rotateKey(storedKey);
+				xored = roundCon(i/4);
+			}else {
+				xored = ExpandedKey[i-4];
 			}
+				
+			for(int l = 0; l < storedKey.length; l++) {
+				byte[] key = toBinaryString(storedKey[l]).getBytes();
+				byte[] rc = toBinaryString(xored[l]).getBytes();
+				storedKey[l] = XOR(key, rc).toString();
+			}
+			ExpandedKey[i] = storedKey;
 		}
-		return false;
+		return ExpandedKey;
 	}
 
 	public String[][] setKey(String key) { // builds key into a hex array by switching to a char[] then looping through
@@ -58,8 +69,18 @@ public class KeyManager implements KeyManagerI {
 		return key;
 	}
 	//private
-	public String[] subKey(String[] key) { // performs substitution on each byte
-		return key;
+	public String subKey(String key) { // performs substitution on each byte
+	    String answer = "nothing returned";
+		try (PythonInterpreter pyInterp = new PythonInterpreter()) {
+	        StringWriter output = new StringWriter();
+	        pyInterp.setOut(output);
+
+	        pyInterp.exec("from com.cryptography.project import main");//anything in this will run like its python
+	        pyInterp.exec("echo(key)");
+	        answer = output.toString();
+		}
+		
+		return answer;
 	}
 	//input 8 bit binary String and RoundKey
 	//private
@@ -71,8 +92,10 @@ public class KeyManager implements KeyManagerI {
 		return resultingKey;
 	}
 	//private
-	public String[] roundCon(String[] key, int roundNumber) {
-		return key;
+	public String[] roundCon(int roundNumber) {
+		String firstByte = Integer.toString(roundNumber)+"b";
+		String[] rKey = {firstByte, "0", "0", "0"};
+		return rKey;
 	}
 	//private -- Checked (without input protection)
 	public String toBinaryString(String s) {//input of any number of bytes

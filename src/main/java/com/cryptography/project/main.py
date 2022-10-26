@@ -6,6 +6,7 @@ I am now left with sbox and shifting columns
 """
 from prettytable import PrettyTable
 
+
 # i will take a key of fixed 16 bytes which is 16 char
 # with a plain text of multiples of fixed 16 bytes blocks
 user_key = input("Please insert the key\n ")
@@ -144,7 +145,8 @@ def s_box(col_hex_list):
     myTable.header = False
     print(myTable.get_string(start=1, end=2) and myTable.get_string(fields=["0", "1"]))
 
-
+def echo(words): #this is a test function to make sure java can call python code
+    return words + " World"
 
 # here i am calling the addR_key fuction with the correct parameters
 """

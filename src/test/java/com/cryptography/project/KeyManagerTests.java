@@ -2,6 +2,7 @@ package com.cryptography.project;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,12 +14,14 @@ public class KeyManagerTests {
 
 
 	public void getRoundKeyTest() {
-		
+
 	}
 	
-
+	@Test
 	public void expandKeyTest() {
-		
+		KeyManager manager = new KeyManager();
+		String[][] result = manager.expandKey();
+		assertNotNull(result); 
 	}
 	
 	@Test
@@ -42,8 +45,13 @@ public class KeyManagerTests {
 		String[] result = manager.rotateKey(input);
 		assertArrayEquals(answer, result);
 	}
-	
-	public void subKeyTest() {
+	//TODO fix calling python class issue
+	public void subKeyTest() {//Check if python will run main.py
+		String input = "Hello";
+		String answer = "Hello World";
+		KeyManager manager = new KeyManager();
+		String result = manager.subKey(input);
+		assertEquals(answer, result); 
 	}
 	
 	@Test //Kinda works. the data is there, but there is another issue
@@ -56,12 +64,13 @@ public class KeyManagerTests {
 		assertArrayEquals(answer, result);
 	}
 
-	public void roundConTest() {
-		String bytes = "01000001";
-		String answer = "A";
+	@Test
+	public void roundConTest() {//TODO
+		int round = 1;
+		String[] answer = {"1b", "0", "0", "0"};
 		KeyManager manager = new KeyManager();
-		String result = manager.toHexString(bytes);
-		assertEquals(answer, result); 
+		String[] result = manager.roundCon(round);
+		assertArrayEquals(answer, result); 
 	}
 	
 	@Test
