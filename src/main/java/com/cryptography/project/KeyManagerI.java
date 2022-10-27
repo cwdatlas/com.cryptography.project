@@ -4,12 +4,12 @@ package com.cryptography.project;
 public interface KeyManagerI {
 
 	//getRoundKey calculates the round key from the key and the roundNumber
-	public String[] getRoundKey(int roundNumber);
+	public String[][] getRoundKey(int roundNumber);
 	
 	//expands the key from the original key
-	public String[][] expandKey();
+	public int[][] expandKey();
 	
 	//sets key
-	public String[][] setKey(String key);
+	public int[][] setKey(String key);
 	
 }
