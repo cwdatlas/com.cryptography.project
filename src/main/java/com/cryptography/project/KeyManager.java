@@ -26,10 +26,10 @@ public class KeyManager implements KeyManagerI {
 	// the array
 	public String[][] getRoundKey(int roundNumber) {// TODO create section of key creation based on
 		String[][] roundKey = new String[4][4];
-		int position = roundNumber*4;
-		for(int i = 0; i < 4; i++) {
-			for(int l = 0; l < 4; l++)
-				roundKey[i][l] = Integer.toHexString(ExpandedKey[(i)+position][(l)]);
+		int position = roundNumber * 4;
+		for (int i = 0; i < 4; i++) {
+			for (int l = 0; l < 4; l++)
+				roundKey[i][l] = Integer.toHexString(ExpandedKey[(i) + position][(l)]);
 		}
 		return roundKey;
 	}
@@ -58,7 +58,7 @@ public class KeyManager implements KeyManagerI {
 	}
 
 	public int[][] setKey(String key) { // builds key into a hex array by switching to a char[] then looping through
-											// array and changing to ascii then hex
+										// array and changing to ascii then hex
 		char[] keyAsChars = key.toCharArray();
 		for (int i = 0; i < keyAsChars.length; i++) {
 			seedKey[i % 4][(int) Math.floor(i / 4)] = (int) keyAsChars[i];
@@ -118,7 +118,7 @@ public class KeyManager implements KeyManagerI {
 		String firstByte = Integer.toString(roundNumber) + "b";
 		int asciByte = Integer.parseInt(firstByte, 16);
 		int asciZero = Integer.parseInt("0", 16);
-		int[] rKey = { asciByte, asciZero, asciZero, asciZero};
+		int[] rKey = { asciByte, asciZero, asciZero, asciZero };
 		return rKey;
 	}
 
@@ -126,7 +126,7 @@ public class KeyManager implements KeyManagerI {
 	public int[] toBinaryArray(int ascii) {// input of any number of bytes
 		// TODO rase error if this happens
 		int[] result = new int[8];
-		int val = ascii; 
+		int val = ascii;
 		for (int i = 0; i < 8; i++) {
 			result[i] = ((val & 128) == 0 ? 0 : 1); // 128 = 1000 0000
 			val <<= 1; // val = val << 1
@@ -136,17 +136,18 @@ public class KeyManager implements KeyManagerI {
 		return result;
 	}
 
-	// This function changes 8 bits to ascii 
+	// This function changes 8 bits to ascii
 	// private --checked (without input protection)
 	public int toAscii(int[] input) { // input 1 8 bite string
 		StringBuilder output = new StringBuilder();
-		
+
 		if (input.length != 8) {
 			System.out.print("Input not valad, must have length of 8: KeyManager/toHexString");
-			// TODO needs to error out saying that input is invalad. Tests needs to be done to
+			// TODO needs to error out saying that input is invalad. Tests needs to be done
+			// to
 			// check validity
 		} else {
-			for(int i = 0; i <input.length; i++) 
+			for (int i = 0; i < input.length; i++)
 				output.append(String.valueOf(input[i]));
 		}
 		return Integer.valueOf(output.toString(), 2); //

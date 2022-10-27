@@ -1,12 +1,12 @@
 package com.cryptography.project;
 
-public class CipherText implements CipherTextI{
-		
-	//gets ciphertext and turns it into matrix and saves it as a private variable
+public class CipherText implements CipherTextI {
+
+	// gets ciphertext and turns it into matrix and saves it as a private variable
 	public CipherText(String CipherText) {
-		
+
 	}
-	
+
 	public int[][] subBytes() {
 		// TODO Auto-generated method stub
 		return null;

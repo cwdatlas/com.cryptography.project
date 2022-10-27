@@ -19,7 +19,6 @@ public class KeyManagerTests {
 		manager.expandKey();
 		for(int i = 0; i < 10; i++) {
 			String[][] roundKey = manager.getRoundKey(i);
-			System.out.println(String.valueOf(roundKey));
 		}
 		assertNotNull("not null"); 
 	}
