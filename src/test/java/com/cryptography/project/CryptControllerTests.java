@@ -6,7 +6,6 @@ import com.cryptography.project.CryptController;
 
 public class CryptControllerTests {
 
-	@Test
 	public void encryptTest() {
 		String file = "C:\\Users\\aidan\\eclipse-workspace_java\\com.cryptography.project\\src\\main\\resources\\Secrets.txt";
 		String key = "Pathformwlsdibr5";
