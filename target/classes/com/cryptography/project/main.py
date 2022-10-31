@@ -1,11 +1,10 @@
 """
 this code is about encryption
-until now i have taken an input text and an input key transformed them to matrices then into separate
-columns them multiplyed them and finaly changed them to hex
-I am now left with sbox and shifting columns
+i have now almost finished all the steps of AES encryption
+i am left with translating the decimals to text
 """
 from prettytable import PrettyTable
-
+import numpy as np
 
 # i will take a key of fixed 16 bytes which is 16 char
 # with a plain text of multiples of fixed 16 bytes blocks
@@ -43,6 +42,7 @@ def key_exps(user_key): #this function turns the 16 bytes to a matrix
     matrix_key = to_matrix(asci_key)
     print("the values of the ascii as a matrix\n")
     print(matrix_key)
+    return matrix_key
 
 
 def mat_tooColumn(input_matrix, col_num): # this function basically return a specific column from matrix
@@ -98,7 +98,7 @@ def add_Rkey(text_matrix,key_matrix):
     print("the list of columns after converting from matrix to columns\n")
     print(list_of_colomns)
     print("\t****************\t\n")
-    # now i got all the columns in a dictionary
+    # now i got all teh columns in a dictionary
     # now multiplying all the columns with the key
     j=0
     key_column = mat_tooColumn(key_matrix, 3)
@@ -116,14 +116,37 @@ def add_Rkey(text_matrix,key_matrix):
     print("the new values of the coloumns after being hexed")
     print(too_hex(list_of_colomns))
     hexed_columns = too_hex(list_of_colomns)
-    return hexed_columns
+
     # now the role of this function is done
     # i can lutiply the text input with  the key input and now it's in HEX
+    # now am adding a fuction cause there might be some hexes with only one value
+    # so am adding 0 before if EX: (A) || (9) => (0A) || (09)
+    i=1
+    final_hex_col = {1: [], 2: [], 3: [], 4: []}
+    column_2 = []
+    for key in hexed_columns :
+        for elements in hexed_columns[key]:
+            if len(elements) == 1:
+                print("before"+elements+"\n")
+                new_element = "0"
+                new_element += elements
+                print("after" + new_element + "\n") # now each elements become two chracter
+                column_2.append(new_element)
+            else:
+                column_2.append(elements)
+        final_hex_col.update({i: column_2})
+        print("the "+str(i)+"column has the new value")
+        print(final_hex_col)
+        column_2 = []
+        i=i+1
+    print(final_hex_col)
 
+
+    return final_hex_col
 
 def s_box(col_hex_list):
     # creating the S-box
-    myTable = PrettyTable(["", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"])
+    myTable = PrettyTable(["", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])
     myTable.add_row(["0", "63", "7C", "77", "7B", "F2", "6B", "6F", "C5", "30", "01", "67", "2B", "FE", "D7", "AB", "76"])
     myTable.add_row(["1", "CA", "82", "C9", "7D", "FA", "59", "47", "F0", "AD", "D4", "A2", "AF", "9C", "A4", "72", "CD"])
     myTable.add_row(["2", "B7", "FD", "93", "26", "36", "3F", "F7", "CC", "34", "A5", "E5", "F1", "71", "D8", "31", "15"])
@@ -143,10 +166,100 @@ def s_box(col_hex_list):
     print(myTable)
     myTable.border = False
     myTable.header = False
-    print(myTable.get_string(start=1, end=2) and myTable.get_string(fields=["0", "1"]))
 
-def echo(words): #this is a test function to make sure java can call python code
-    return words + " World"
+
+    row = myTable[1] # this part initialzes the row value
+    print(row.get_string(fields=["0"])) # this part initialzes the column value
+    # now i am going to take evry value from the inputted hexed columns and subtutition
+    column = []
+    sub_col = {1: [], 2: [], 3: [], 4: []}
+    for key in col_hex_list :
+        for elements in col_hex_list[key]:
+            print(elements)
+            row = int(elements[:1])
+            col = elements[1:2]
+            sub_hex = myTable[row].get_string(fields=[col])
+            column.append(sub_hex)
+        sub_col.update({key: column})
+        column = []
+        print("the new sub col for the key"+str(key))
+        print(sub_col)
+
+
+    print("the before sub columns")
+    print(col_hex_list)
+    print(" the final subtitued values of columns are")
+    print(sub_col)
+    return sub_col
+
+# function to change hex to dec
+def hexTodec(hex_col):
+    dec_col = {1: [], 2: [], 3: [], 4: []}
+    dec_list = []
+    for key in hex_col :
+        for elements in hex_col[key]:
+            dec_val = int(elements, 16)
+            dec_list.append(dec_val)
+        dec_col.update({key: dec_list})
+        dec_list = []
+    return dec_col
+
+
+
+# below is the function that switches colums
+def switch_col(sub_col):
+    sub_col = hexTodec(sub_col)
+    print(" the columns before the switch")
+    print(sub_col)
+    list_col = []
+    list_row = []
+    switch_col = {1: [], 2: [], 3: [], 4: []}
+    add_result= [0, 0, 0, 0]
+    # in the next i am choosing the col and the row for which i will perform the proudct of them both
+    for key in sub_col:
+        list_col.append(sub_col[key])
+        list_row.append(sub_col[1][key-1])
+        list_row.append(sub_col[2][key-1])
+        list_row.append(sub_col[3][key-1])
+        list_row.append(sub_col[4][key-1])
+        mul_result = np.multiply(list_col, list_row)
+        add_result = np.add(mul_result, add_result)
+        add_result = add_result.tolist()# this is used to convert teh vectors to lists
+        switch_col.update({key: add_result[0]})
+        list_col = []
+        list_row = []
+    print(" the columns after the switch")
+    print(switch_col)
+    return switch_col
+
+# now the function that shift rows:
+def shiftRows(shift_col):
+    list_col = []
+    shif_rows = {1: [], 2: [], 3: [], 4: []}
+    j=1
+    k=1
+    print("before shifting rows:")
+    print(shift_col)
+    for key in shift_col:
+        i = key
+        while j<5 :
+            list_col.append(shift_col[i][k-1])
+            j+=1
+            i=(i+1)%5
+            k=(k+1)%4
+            if i==0:
+                i+=1
+        shif_rows.update({key:list_col})
+        list_col = []
+        j=1
+        k=1
+    print("the shifted rows are ")
+    print(shif_rows)
+    return shif_rows
+
+
+
+
 
 # here i am calling the addR_key fuction with the correct parameters
 """
@@ -155,15 +268,60 @@ first = to_matrix(first)
 second = to_ascii(user_key)
 second = to_matrix(second)
 """
-#print(first)
-#list_of_col = {1: [116, 104, 105, 115], 2: [32, 105, 115, 32], 3: [97, 32, 116, 101], 4: [115, 116, 32, 105]}
+# this is test dictionnat
+"""
+#list_of_col = {1: [1, 2, 3, 4], 2: [5, 6, 7, 8], 3: [8, 10, 11, 12], 4: [13, 14, 15, 16]}
 #too_hex(list_of_col)
+"""
 
-# print(second)
 
+# this is a text for `add_Rkey
+"""
+first = to_ascii(user_text)
+first = to_matrix(first)
+second = to_ascii(user_key)
+second = to_matrix(second)
 #add_Rkey(first, second)
-#this one is to call the function that separates the columns from matrix and does the XOR of the key and text input
 
+"""
+# this is the main part where you can test for the whole code
+"""
+first = key_exps(user_text)
+second = key_exps(user_key)
+third = add_Rkey(first, second)
+fourth = s_box(third)
+fifth =switch_col(fourth)
+shiftRows(fifth)
 
+"""
+first = key_exps(user_text)
+second = key_exps(user_key)
+third = add_Rkey(first, second)
+fourth = s_box(third)
+fifth = switch_col(fourth)
+shiftRows(fifth)
+
+# this cam be used as an input to test the hex_Todec()
+"""
+list_of_hex ={1: [' 09 ', ' 00 ', ' C5 ', ' 6B '], 2: [' 4A ', ' AF ', ' 5A ', ' 77 '], 3: [' 4C ', ' 7C ', ' C9 ', ' B1 '], 4: [' A0 ', ' 00 ', ' 7B ', ' CD ']}
+hexTodec(list_of_hex)
+"""
+# this is to test the switch_col
+"""
+list_of_hex ={1: [' 09 ', ' 00 ', ' C5 ', ' 6B '], 2: [' 4A ', ' AF ', ' 5A ', ' 77 '], 3: [' 4C ', ' 7C ', ' C9 ', ' B1 '], 4: [' A0 ', ' 00 ', ' 7B ', ' CD ']}
+switch_col(list_of_hex)
+"""
+# this function is to test the shiftrows function:
+"""
+list_of_col = {1: [1, 2, 3, 4], 2: [5, 6, 7, 8], 3: [9, 10, 11, 12], 4: [13, 14, 15, 16]}
+shiftRows(list_of_col)
+"""
+
+# this is test for the key
+"""
 # key_exps(user_key)
-s_box(1)
+
+"""
+
+#s_box(list_of_col)
+
