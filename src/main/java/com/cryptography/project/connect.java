@@ -11,7 +11,7 @@ public class connect {
 public static void main(String[] args) throws IOException {
 try {
     System.out.println(" am working1");
-    ProcessBuilder builder = new ProcessBuilder("python3","/Users/hamzazaher/VSprojects/javaconncetiom/test.py","1234qwerasdfzxcv","this is a test i");
+    ProcessBuilder builder = new ProcessBuilder("python3","/Users/hamzazaher/VSprojects/javaconncetiom/addRkey.py","1234qwerasdfzxcv","this is a test i");
     /*
      * to add argument the command will be "python3","/Users/hamzazaher/VSprojects/AESclone/test.py", "arg1", "arg2"
      */
