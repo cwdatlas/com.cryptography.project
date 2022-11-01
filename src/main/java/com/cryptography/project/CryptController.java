@@ -122,25 +122,17 @@ public class CryptController {
 
 		return plainText;
 	}
-
-	private static String[] breakInto16Bytes(String file) {
+	//private
+	public static String[] breakInto16Bytes(String file) {
 		int padding = 16 - (file.length() % 16);
 		for (int i = 0; i < padding; i++)// add padding to end of text to make text divisible by 16
 			file = file.concat("0");
 		String[] textChunks = file.split("(?<=\\G................)");
-
-		/**
-		 * char[] textChunks = new char[file.length()/16]; for(int i = 0; i <
-		 * textChunks.length; i++) { int start = (i+1)*16-16; int end = (i+1)*16;
-		 * file.getChars(start, end, textChunks, i); //What I think this does is break
-		 * up the string into sections //of the designated size and place those chars
-		 * into the textChunk //Array (this could break if thats not what it does }
-		 **/
 		return textChunks;
 
 	}
-
-	private static String getFileText(String file) {
+	//private
+	public static String getFileText(String file) {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
@@ -170,12 +162,11 @@ public class CryptController {
 		}
 		return plainText;
 	}
-
-	private static void writeDoc(String doc, String fileName) {
+	//private
+	public static void writeDoc(String doc, String fileName) {
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(new FileWriter(fileName));
-			System.out.println(fileName + " " + doc);
 			writer.write(doc);
 			writer.close();
 		} catch (IOException e1) {

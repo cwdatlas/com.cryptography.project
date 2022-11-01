@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.cryptography.project.KeyManagerTests" time="0.023" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.cryptography.project.KeyManagerTests" time="0.001" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="16"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-16.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\aidan\AppData\Local\Temp\surefire1208122021751006973\surefirebooter7339961196687169209.jar C:\Users\aidan\AppData\Local\Temp\surefire1208122021751006973 2022-10-27T13-10-35_695-jvmRun1 surefire8451079595517141649tmp surefire_04699677073918030822tmp"/>
+    <property name="sun.java.command" value="C:\Users\aidan\AppData\Local\Temp\surefire761201050495516400\surefirebooter6774227272295705002.jar C:\Users\aidan\AppData\Local\Temp\surefire761201050495516400 2022-11-01T10-23-03_959-jvmRun1 surefire7319761309075922284tmp surefire_012818312723587947027tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\aidan\eclipse-workspace_java\com.cryptography.project\target\test-classes;C:\Users\aidan\eclipse-workspace_java\com.cryptography.project\target\classes;C:\Users\aidan\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.2\junit-jupiter-api-5.7.2.jar;C:\Users\aidan\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\aidan\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\aidan\.m2\repository\org\junit\platform\junit-platform-commons\1.7.2\junit-platform-commons-1.7.2.jar;C:\Users\aidan\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.2\junit-jupiter-engine-5.7.2.jar;C:\Users\aidan\.m2\repository\org\junit\platform\junit-platform-engine\1.7.2\junit-platform-engine-1.7.2.jar;C:\Users\aidan\.m2\repository\org\python\jython\2.7.2\jython-2.7.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\aidan\AppData\Local\Temp\surefire1208122021751006973\surefirebooter7339961196687169209.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\aidan\AppData\Local\Temp\surefire761201050495516400\surefirebooter6774227272295705002.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="16.0.1+9-24"/>
@@ -56,11 +56,12 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="60.0"/>
   </properties>
-  <testcase name="setKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0.009"/>
+  <testcase name="setKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
   <testcase name="roundConTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
   <testcase name="XORTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
   <testcase name="toAsciiTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
-  <testcase name="expandKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
-  <testcase name="rotateKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0.001"/>
+  <testcase name="expandKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0.001"/>
+  <testcase name="rotateKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
   <testcase name="toBinaryArrayTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
+  <testcase name="getRoundKeyTest" classname="com.cryptography.project.KeyManagerTests" time="0"/>
 </testsuite>

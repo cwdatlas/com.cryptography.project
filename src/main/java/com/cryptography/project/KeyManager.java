@@ -9,22 +9,13 @@ import org.python.util.PythonInterpreter;
 
 public class KeyManager implements KeyManagerI {
 	private int[][] seedKey = new int[4][4];
-	private int[][] ExpandedKey = new int[44][4]; // TODO set to actual size
+	private int[][] ExpandedKey = new int[44][4];
 
-	// Constructor, so if you need to initialize any variables do it here
-	// Also, we are wanting to have our key and key variables to be in hex, so you
-	// will have
-	// to change the variable declarations to the hexNumber variable or whatever it
-	// takes
-	// to have a hex variable (add the library to dependencies in Pom file if you
-	// need to
 	public KeyManager() {
 
 	}
 
-	// TODO update so roundNumber is hashed and then turned to a hex and placed in
-	// the array
-	public String[][] getRoundKey(int roundNumber) {// TODO create section of key creation based on
+	public String[][] getRoundKey(int roundNumber) {
 		String[][] roundKey = new String[4][4];
 		int position = roundNumber * 4;
 		for (int i = 0; i < 4; i++) {
