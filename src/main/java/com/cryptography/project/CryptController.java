@@ -86,7 +86,7 @@ public class CryptController {
 			cipherBuilder.shiftRows();
 			cipherBuilder.encryptKey(keyManager.getRoundKey(rounds - 1)); // we dont want the same round key to be
 																			// generated
-			String cipherTextFragment = cipherBuilder.getCipherText();
+			String cipherTextFragment = cipherBuilder.getWorkingText();
 			cipherText = cipherText.concat(cipherTextFragment);
 		}
 		return cipherText;
@@ -115,7 +115,7 @@ public class CryptController {
 				cipherBuilder.subBytesInverse(); // make sure returns arent needed (returns should be void or boolean)
 			}
 			cipherBuilder.dectryptKey(keyManager.getRoundKey(0)); // we dont want the same round key to be generated
-			String plainTextFragment = cipherBuilder.getCipherText();// TODO name method more accurately (returns cipher
+			String plainTextFragment = cipherBuilder.getWorkingText();// TODO name method more accurately (returns cipher
 																		// and plain text)
 			plainText = plainText.concat(plainTextFragment);
 		}
