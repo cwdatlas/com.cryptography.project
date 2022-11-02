@@ -13,7 +13,7 @@ import com.cryptography.project.KeyManager;
 public class KeyManagerTests {
 
 	@Test
-	public void getRoundKeyTest() {
+	public void getRoundKeyTest() {//TODO ArrayIndexOutOfBounds Index 1 out of bounds
 		KeyManager manager = new KeyManager();
 		manager.setKey("HelloWorldMyName");//must be 16 bytes
 		manager.expandKey();
@@ -24,7 +24,7 @@ public class KeyManagerTests {
 	}
 	
 	@Test
-	public void expandKeyTest() {
+	public void expandKeyTest() {//TODO ArrayIndexOutOfBounds Index 1 out of bounds
 		KeyManager manager = new KeyManager();
 		manager.setKey("HelloWorldMyName");//must be 16 bytes
 		int[][] result = manager.expandKey();

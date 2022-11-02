@@ -26,21 +26,21 @@ public class CipherLibraryTests {
 	
 	@Test
 	public void subBytesTest() {
-		int input = 40;
-		int answer = 52;
+		int input = 4;
+		int answer = 242;
 		int result = CipherLibrary.subBytes(input);
 		assertEquals(answer, result); 
 	}
 	
 	@Test
-	public void subBytesInverseTest() {
-		int input = 52;
-		int answer = 40;
-		int result = CipherLibrary.subBytes(input);
+	public void subBytesInverseTest() {//TODO expected: <40> but was: <24>
+		int input = 242;
+		int answer = 4;
+		int result = CipherLibrary.subBytesInverse(input);
 		assertEquals(answer, result); 
 	}
 	@Test
-	public void shiftRowsTest() {
+	public void shiftRowsTest() {//TODO array contents differ at index [3][1], expected: <108> but was: <121>
 		int[][] input = {
 				{72,111,108,78},
 				{101,87,100,97},
@@ -56,7 +56,7 @@ public class CipherLibraryTests {
 	}
 	
 	@Test
-	public void shiftRowsInverseTest() {
+	public void shiftRowsInverseTest() {//TODO array contents differ at index [1][0], expected: <101> but was: <100>
 		int[][] input = {
 				{72,111,108,78},
 				{87,100,97,101},
@@ -67,7 +67,7 @@ public class CipherLibraryTests {
 				{101,87,100,97},
 				{108,111,77,109},
 				{108,114,121,101}};
-		int[][] result = CipherLibrary.shiftRows(input);
+		int[][] result = CipherLibrary.shiftRowsInverse(input);
 		assertArrayEquals(answer, result);
 	}
 	

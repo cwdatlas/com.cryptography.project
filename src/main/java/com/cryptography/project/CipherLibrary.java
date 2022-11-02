@@ -38,7 +38,11 @@ public class CipherLibrary {
 			{ "17", "2b", "04", "7e", "ba", "77", "d6", "26", "e1", "69", "14", "63", "55", "21", "0c", "7d" }};
 
 	public static int subBytes(int ascii) {
-		char[] hexs = Integer.toHexString(ascii).toCharArray();
+		String hex = Integer.toHexString(ascii);
+		if(hex.length() == 1) { //this makes sure that if we have input that is one char, we add another to it
+			hex = "0".concat(hex);
+		}
+		char[] hexs = hex.toCharArray();
 		int y = Integer.parseInt(String.valueOf(hexs[0]), 16);
 		int x = Integer.parseInt(String.valueOf(hexs[1]), 16);
 		String substitution = hexTable[y][x]; // This might need to be switched
@@ -46,7 +50,11 @@ public class CipherLibrary {
 	}
 
 	public static int subBytesInverse(int ascii) {
-		char[] hexs = Integer.toHexString(ascii).toCharArray();
+		String hex = Integer.toHexString(ascii);
+		if(hex.length() == 1) { //this makes sure that if we have input that is one char, we add another to it
+			hex = "0".concat(hex);
+		}
+		char[] hexs = hex.toCharArray();
 		int y = Integer.parseInt(String.valueOf(hexs[0]), 16);
 		int x = Integer.parseInt(String.valueOf(hexs[1]), 16);
 		String substitution = hexTableInverse[y][x]; // This might need to be switched
@@ -146,11 +154,11 @@ public class CipherLibrary {
 	}
 	
 	public static int[] rotateKeyRight(int[] key) { // one-byte left shift on key
-		int firstByte = key[0];
-		for (int i = 0; i < key.length - 1; i++) {
-			key[i] = key[3 - i];
+		int firstByte = key[3];
+		for (int i = 3; i > 1 - 1; i--) {
+			key[i] = key[(i-1)];
 		}
-		key[key.length - 1] = firstByte;
+		key[0] = firstByte;
 		return key;
 	}
 }

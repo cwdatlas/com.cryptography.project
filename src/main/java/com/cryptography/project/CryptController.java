@@ -19,6 +19,8 @@ public class CryptController {
 
 	// TODO step 1: deal with input from terminal and make decision based off of
 	// that
+	//C:\Users\aidan\eclipse-workspace_java\com.cryptography.project\src\main\resources\Secrets.txt
+	//sldifmelcmvpquag
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		boolean workingUser = true;
@@ -74,18 +76,12 @@ public class CryptController {
 
 		for (int i = 0; i < stringPackets.length; i++) {// Round 1
 			CipherText cipherBuilder = new CipherText(stringPackets[i]); // can only use 16byte increments of text
-			cipherBuilder.encryptKey(keyManager.getRoundKey(i));
+			encryptFirstStep(cipherBuilder, keyManager, 0);
 
-			for (int e = 0; e < rounds - 2; e++) {// rounds 2 - n-1
-				cipherBuilder.subBytes(); // make sure returns arent needed (returns should be void or boolean)
-				cipherBuilder.shiftRows();
-				cipherBuilder.mixColumns();
-				cipherBuilder.encryptKey(keyManager.getRoundKey(i + e));
+			for (int e = 1; e < (rounds - 1); e++) {// rounds 2 - n-1
+				encryptSecondStep(cipherBuilder, keyManager, e + 1);
 			}
-			cipherBuilder.subBytes(); // round n
-			cipherBuilder.shiftRows();
-			cipherBuilder.encryptKey(keyManager.getRoundKey(rounds - 1)); // we dont want the same round key to be
-																			// generated
+			encryptThirdStep(cipherBuilder, keyManager, rounds-1);
 			String cipherTextFragment = cipherBuilder.getWorkingText();
 			cipherText = cipherText.concat(cipherTextFragment);
 		}
@@ -104,23 +100,51 @@ public class CryptController {
 
 		for (int i = 0; i < stringPackets.length; i++) {
 			CipherText cipherBuilder = new CipherText(stringPackets[i]); // can only use 16byte increments of text
-			cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds - 1 - i)); // needs to get key for round 9 (8)
-			cipherBuilder.shiftRowsInverse();
-			cipherBuilder.subBytesInverse();
-
-			for (int e = 0; e < rounds - 2; e++) {// rounds 2 - n-1
-				cipherBuilder.dectryptKey(keyManager.getRoundKey(rounds - 1 - (i + e)));
-				cipherBuilder.mixColumnsInverse();
-				cipherBuilder.shiftRowsInverse();
-				cipherBuilder.subBytesInverse(); // make sure returns arent needed (returns should be void or boolean)
+			decryptFirstStep(cipherBuilder, keyManager, rounds - 1);
+			for (int e = 1; e < rounds - 1; e++) {// rounds 2 - n-1
+				decryptSecondStep(cipherBuilder, keyManager, rounds - e - 1);
 			}
-			cipherBuilder.dectryptKey(keyManager.getRoundKey(0)); // we dont want the same round key to be generated
+			decryptThirdStep(cipherBuilder, keyManager, 0);
 			String plainTextFragment = cipherBuilder.getWorkingText();// TODO name method more accurately (returns cipher
 																		// and plain text)
 			plainText = plainText.concat(plainTextFragment);
 		}
 
 		return plainText;
+	}
+	//encrypt steps
+	public static void encryptFirstStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.encryptKey(keyManager.getRoundKey(roundNumber));
+	}
+	
+	public static void encryptSecondStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.subBytes(); // make sure returns arent needed (returns should be void or boolean)
+		cipherBuilder.shiftRows();
+		//cipherBuilder.mixColumns();
+		cipherBuilder.encryptKey(keyManager.getRoundKey(roundNumber));
+	}
+	
+	public static void encryptThirdStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.subBytes(); // round n
+		cipherBuilder.shiftRows();
+		cipherBuilder.encryptKey(keyManager.getRoundKey(roundNumber)); // we dont want the same round key to be
+	}
+	//decrypt steps
+	public static void decryptFirstStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(roundNumber)); // needs to get key for round 9 (8)
+		cipherBuilder.shiftRowsInverse();
+		cipherBuilder.subBytesInverse();
+	}
+	
+	public static void decryptSecondStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(roundNumber));
+		//cipherBuilder.mixColumnsInverse();
+		cipherBuilder.shiftRowsInverse();
+		cipherBuilder.subBytesInverse(); // make sure returns arent needed (returns should be void or boolean)
+	}
+	
+	public static void decryptThirdStep(CipherText cipherBuilder, KeyManager keyManager, int roundNumber) {
+		cipherBuilder.dectryptKey(keyManager.getRoundKey(roundNumber)); // we dont want the same round key to be generated
 	}
 	//private
 	public static String[] breakInto16Bytes(String file) {

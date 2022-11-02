@@ -1,11 +1,12 @@
 package com.cryptography.project;
 
 public class CipherText implements CipherTextI {
-	int[][] workingText;
+	int[][] workingText = new int[4][4]; 
 
 	// gets ciphertext and turns it into matrix and saves it as a private variable
 	public CipherText(String cipherText) {
-		if(cipherText.length()==16) {
+		int length = cipherText.length();
+		if(cipherText.length() != 16) {
 			System.out.println("CipherText inisalized with string not of 16 bytes");
 		}else {
 			char[] keyAsChars = cipherText.toCharArray();
@@ -61,10 +62,10 @@ public class CipherText implements CipherTextI {
 	}
 
 	public String getWorkingText() {
-		StringBuffer text = null;
+		StringBuffer text = new StringBuffer();
 		for(int i = 0; i < 4; i++)
 			for(int l = 0; l < 4; l++)
-				text.append( (char) workingText[i][l]);
+				text.append( (char) workingText[l][i]);
 		return text.toString();
 	}
 
