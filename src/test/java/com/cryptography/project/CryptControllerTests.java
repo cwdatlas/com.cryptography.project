@@ -54,9 +54,10 @@ public class CryptControllerTests {
 	@Test
 	public void controllerTest() {
 		String plainText = "";
-		String file = "C:\\Users\\aidan\\eclipse-workspace_java\\com.cryptography.project\\src\\main\\resources\\lotr.txt";
+		String file = "C:\\Users\\aidan\\eclipse-workspace_java\\com.cryptography.project\\src\\main\\resources\\Gasby.txt";
+		String fileOut = "C:\\Users\\aidan\\eclipse-workspace_java\\com.cryptography.project\\src\\main\\resources\\GatsbyOut.txt";
 		String text = com.cryptography.project.CryptController.getFileText(file);
-		//System.out.println("this is the length of the text" + text.toCharArray().length);
+		System.out.println("this is the length of the text" + text.toCharArray().length);
 		String key = "Hatjformhlsd5br5";
 		KeyManager keyManager = new KeyManager(); // Creating keyManager Object, then generating key
 		keyManager.setKey(key);
@@ -88,6 +89,7 @@ public class CryptControllerTests {
 			com.cryptography.project.CryptController.decryptThirdStep(cipherBuilder, keyManager, 0);
 			plainText = plainText.concat(cipherBuilder.getWorkingText());
 		}
+		//com.cryptography.project.CryptController.writeDoc(plainText, fileOut);
 		//assertEquals(text, plainText);
 	}
 }
