@@ -7,14 +7,18 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class CryptController {
 	static int rounds = 9;
-
+	//test key: lsoeifubnnenq0o
+	//test directory: C:\Users\aidan\eclipse-workspace_java\com.cryptography.project\src\main\resources\Secrets.txt
 	// TODO Build in all steps of controller
 
 	// TODO step 1: deal with input from terminal and make decision based off of
@@ -27,7 +31,7 @@ public class CryptController {
 
 		System.out.println("-----Starting Cryptographic System-----");
 		while (workingUser) {
-			System.out.println("Do you want to encrypt or decrypt or stop?");
+			System.out.println("Do you want to 'encrypt', 'stop', or read the 'manual'?");
 			String input = reader.readLine();
 
 			if (input.equals("stop")) {
@@ -39,25 +43,28 @@ public class CryptController {
 				System.out.println("Please type in the location of your document");
 				String TextDocName = reader.readLine();
 				String TextDoc = getFileText(TextDocName);
-				System.out.println("Please type in 16byte key");
+				System.out.println("Please type in 16 byte key");
 				String seedKey = reader.readLine();
+				if(seedKey.length() != 16) 
+					seedKey = "sidlvnsieolsmgnh";
 				System.out.println("encrypting file...");
 				String cypherDoc = encrypt(TextDoc, seedKey);
-				writeDoc(cypherDoc, TextDocName);
-				System.out.println("Document has been encrypted");
-
-			} else if (input.equals("decrypt")) {
-				System.out.println("Please type in the location of your document");
-				String TextDocName = reader.readLine();
-				String TextDoc = getFileText(TextDocName);
-				System.out.println("Please type in 16byte key");
-				String seedKey = reader.readLine();
+				System.out.println("Encryption Complete");
+				System.out.println("This is the encrypted text: " + cypherDoc);
+				System.out.println("Cipher Text has been saved to memory, press enter to continue.");
+				reader.readLine();
 				System.out.println("decrypting file...");
-				String cypherDoc = decrypt(TextDoc, seedKey);
-				writeDoc(cypherDoc, TextDocName);
-				System.out.println("Document has been encrypted");
+				String plainText = decrypt(cypherDoc, seedKey);
+				writeDoc(plainText, TextDocName);
+				System.out.println("Decryption complete, check document for results");
 
-			} else {
+			} else if (input.equals("manual")) {
+				String manual = getFileText("src\\main\\resources\\manual.txt");
+				String[] lines = manual.split("%");
+				for(String i : lines)
+					System.out.println(i);
+				
+			}else {
 				System.out.println("Unexpected input, please try again"); // TODO make statement loop
 			}
 		}
@@ -74,16 +81,20 @@ public class CryptController {
 		keyManager.expandKey();
 		String[] stringPackets = breakInto16Bytes(plainText);
 
-		for (int i = 0; i < stringPackets.length; i++) {// Round 1
-			CipherText cipherBuilder = new CipherText(stringPackets[i]); // can only use 16byte increments of text
+		for (String fragment : stringPackets) {
+			CipherText cipherBuilder = new CipherText(fragment);
+			// encryption section
 			encryptFirstStep(cipherBuilder, keyManager, 0);
-
-			for (int e = 1; e < (rounds - 1); e++) {// rounds 2 - n-1
-				encryptSecondStep(cipherBuilder, keyManager, e + 1);
-			}
-			encryptThirdStep(cipherBuilder, keyManager, rounds-1);
-			String cipherTextFragment = cipherBuilder.getWorkingText();
-			cipherText = cipherText.concat(cipherTextFragment);
+			encryptSecondStep(cipherBuilder, keyManager, 1);
+			encryptSecondStep(cipherBuilder, keyManager, 2);
+			encryptSecondStep(cipherBuilder, keyManager, 3);
+			encryptSecondStep(cipherBuilder, keyManager, 4);
+			encryptSecondStep(cipherBuilder, keyManager, 5);
+			encryptSecondStep(cipherBuilder, keyManager, 6);
+			encryptSecondStep(cipherBuilder, keyManager, 7);
+			encryptSecondStep(cipherBuilder, keyManager, 8);
+			encryptThirdStep(cipherBuilder, keyManager, 9);
+			cipherText = cipherText.concat(cipherBuilder.getWorkingText());
 		}
 		return cipherText;
 	}
@@ -98,16 +109,21 @@ public class CryptController {
 		keyManager.expandKey();
 		String[] stringPackets = breakInto16Bytes(cipherText);
 
-		for (int i = 0; i < stringPackets.length; i++) {
-			CipherText cipherBuilder = new CipherText(stringPackets[i]); // can only use 16byte increments of text
-			decryptFirstStep(cipherBuilder, keyManager, rounds - 1);
-			for (int e = 1; e < rounds - 1; e++) {// rounds 2 - n-1
-				decryptSecondStep(cipherBuilder, keyManager, rounds - e - 1);
-			}
+		for (String fragment : stringPackets) {
+			CipherText cipherBuilder = new CipherText(fragment);
+			// decryption section
+			//All steps and in order (there was an error when trying to use loops for secondStep)
+			decryptFirstStep(cipherBuilder, keyManager, 9);
+			decryptSecondStep(cipherBuilder, keyManager, 8);
+			decryptSecondStep(cipherBuilder, keyManager, 7);
+			decryptSecondStep(cipherBuilder, keyManager, 6);
+			decryptSecondStep(cipherBuilder, keyManager, 5);
+			decryptSecondStep(cipherBuilder, keyManager, 4);
+			decryptSecondStep(cipherBuilder, keyManager, 3);
+			decryptSecondStep(cipherBuilder, keyManager, 2);
+			decryptSecondStep(cipherBuilder, keyManager, 1);
 			decryptThirdStep(cipherBuilder, keyManager, 0);
-			String plainTextFragment = cipherBuilder.getWorkingText();// TODO name method more accurately (returns cipher
-																		// and plain text)
-			plainText = plainText.concat(plainTextFragment);
+			plainText = plainText.concat(cipherBuilder.getWorkingText());
 		}
 
 		return plainText;
@@ -148,10 +164,17 @@ public class CryptController {
 	}
 	//private
 	public static String[] breakInto16Bytes(String file) {
-		int padding = 16 - (file.length() % 16);
+		int padding = 16 -(file.length() % 16);
 		for (int i = 0; i < padding; i++)// add padding to end of text to make text divisible by 16
 			file = file.concat("0");
-		String[] textChunks = file.split("(?<=\\G................)");
+		//String[] textChunks = file.split("(?<=\\G................)"); //the previous solution, but didnt work with ciphertext
+		String[] textChunks = new String[file.length()/16];
+		
+		textChunks[0] = file.substring(0, 16);
+		for(int i = 1; i < textChunks.length; i++) {
+			int start = i*16;
+		    textChunks[i] = file.substring(start, start + 16);
+		}
 		return textChunks;
 
 	}
@@ -188,9 +211,8 @@ public class CryptController {
 	}
 	//private
 	public static void writeDoc(String doc, String fileName) {
-		BufferedWriter writer = null;
 		try {
-			writer = new BufferedWriter(new FileWriter(fileName));
+			Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
 			writer.write(doc);
 			writer.close();
 		} catch (IOException e1) {

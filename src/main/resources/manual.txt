@@ -1,0 +1,39 @@
+	--This is the manual for AES clone--%
+encrypt:%
+	This command will require you to%
+	input a key and the location of%
+	any file on the computer. The %
+	key will have to be 16 bytes, %
+	which means that its 16 characters%
+	long. If key isnt 16 bytes then %
+	a preset 16 byte key will be used.%
+	The encrypted text will%
+	replace all text on the target%
+	text file.%
+	Decryption happens after encryption%
+	happens. This is because we cant%
+	reliably save the ciphertext as%
+	it has characters a text file cant%
+	have saved to it. The Decryption%
+	method is the exact opposite of %
+	the encryption method.%
+	%
+
+manual:%
+	explains the function of each%
+	command.%
+	%
+stop:%
+	Stop will shutdown the program%
+	%
+Info:%
+	We used unit tests to calculate time%
+	taken to complete each test. The%
+	user interface here is built for%
+	interactivity rather than for testing.%
+	The Ecryption isnt perfect, as there are%
+	a couple characters that arent encrypted%
+	properly. We didnt have time to depug this%
+	issue, but we think it has something to do%
+	with the substitution.%
+	%

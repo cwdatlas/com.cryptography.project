@@ -21,17 +21,17 @@ public class CipherLibraryTests {
 		int[] result = CipherLibrary.rotateKeyRight(input);
 		assertArrayEquals(answer, result);
 	}
-	
+
 	public void subBytesTest() {
-		int input = 4;
-		int answer = 242;
+		int input = 40;
+		int answer = 28;
 		int result = CipherLibrary.subBytes(input);
 		assertEquals(answer, result); 
 	}
-	
+
 	public void subBytesInverseTest() {//TODO expected: <40> but was: <24>
-		int input = 242;
-		int answer = 4;
+		int input = 28;
+		int answer = 40;
 		int result = CipherLibrary.subBytesInverse(input);
 		assertEquals(answer, result); 
 	}
