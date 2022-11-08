@@ -1,6 +1,8 @@
 # com.cryptography.project
 Written by Aidan Scott
-Cryptography project 
+other contrubuters include:
+	Hamza Zaher 
+	Nikitas Valtadoros
 
 Greeings:
   hello, This program is build directly off of the AES ecryption method with a couple changes. The Interface will allow you to easily encrypt a file, see it on the terminal and then the file will be decrypted. The original file will be updated to reflect the decrypted text. It is not perfect. There is a wrong character round every 12 characters. I got help developing some of the cryptographic fuctions basing them off of the funcitons my teammate made in the main.py file. He has developed his own cryptographic algorithm all in python. main.py is not activly used in this project, I keep it there for postarity.
